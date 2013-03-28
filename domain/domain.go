@@ -14,4 +14,5 @@ type Message struct {
 	Topic string
 	Date  time.Time
 	Link  string
+	ID    string
 }

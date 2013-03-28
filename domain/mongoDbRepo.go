@@ -7,6 +7,13 @@ import (
 	"time"
 )
 
+type News struct {
+	Topic string
+	Date  time.Time
+	Link  string
+	ID    bson.ObjectId `bson:"_id,omitempty"`
+}
+
 type MongoDbNewsRepo struct {
 	dbhost string
 	dbname string
@@ -25,10 +32,10 @@ func (this *MongoDbNewsRepo) getNewsCollection() *mgo.Collection {
 func (this *MongoDbNewsRepo) StoreAll(messages []*Message) {
 	collection := this.getNewsCollection()
 	defer collection.Database.Session.Close()
-
-	for _, message := range messages {
-		err := collection.Insert(message)
-		helper.HandleFatalError("error inserting message:", err)
+	newsList := convertAllMessagesToNews(messages)
+	for _, news := range newsList {
+		err := collection.Insert(news)
+		helper.HandleFatalError("error inserting news:", err)
 	}
 }
 
@@ -36,9 +43,9 @@ func (this *MongoDbNewsRepo) GetLatestMessageDate() time.Time {
 	collection := this.getNewsCollection()
 	defer collection.Database.Session.Close()
 
-	result := Message{}
+	result := News{}
 	err := collection.Find(nil).Select(bson.M{"date": 1}).Sort("-date").One(&result)
-	helper.HandleFatalError("error getting latest message:", err)
+	helper.HandleFatalError("error getting latest News:", err)
 	return result.Date
 }
 
@@ -46,8 +53,40 @@ func (this *MongoDbNewsRepo) GetAllMessages() []*Message {
 	collection := this.getNewsCollection()
 	defer collection.Database.Session.Close()
 
-	result := make([]*Message, 0)
+	result := make([]*News, 0)
 	err := collection.Find(nil).Sort("-date").All(&result)
-	helper.HandleFatalError("error getting all messages:", err)
-	return result
+	helper.HandleFatalError("error getting all News:", err)
+	return convertAllNewsToMesssages(result)
+}
+
+func messageToNews(message *Message) *News {
+	return &News{
+		Topic: message.Topic,
+		Date:  message.Date,
+		Link:  message.Link,
+		ID:    bson.ObjectIdHex(message.ID)}
+}
+
+func convertAllMessagesToNews(messages []*Message) []*News {
+	newsList := make([]*News, 0)
+	for _, message := range messages {
+		newsList = append(newsList, messageToNews(message))
+	}
+	return newsList
+}
+
+func newsToMessage(news *News) *Message {
+	return &Message{
+		Topic: news.Topic,
+		Date:  news.Date,
+		Link:  news.Link,
+		ID:    news.ID.Hex()}
+}
+
+func convertAllNewsToMesssages(newsList []*News) []*Message {
+	messages := make([]*Message, 0)
+	for _, news := range newsList {
+		messages = append(messages, newsToMessage(news))
+	}
+	return messages
 }

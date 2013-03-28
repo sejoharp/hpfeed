@@ -33,11 +33,11 @@ func determineNewMessage(allMessages []*Message, latestMessageDate time.Time) []
 }
 
 func convertToDomainMessage(message *Message) *domain.Message {
-	return &domain.Message{Topic: message.Topic, Date: message.Date, Link: message.Link}
+	return &domain.Message{Topic: message.Topic, Date: message.Date, Link: message.Link, ID: message.ID}
 }
 
 func convertToUsecaseMessage(message *domain.Message) *Message {
-	return &Message{Topic: message.Topic, Date: message.Date, Link: message.Link}
+	return &Message{Topic: message.Topic, Date: message.Date, Link: message.Link, ID: message.ID}
 }
 
 func convertAllToUsecaseMessages(messages []*domain.Message) []*Message {
