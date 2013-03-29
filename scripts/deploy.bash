@@ -9,7 +9,6 @@ command_user="hpnews"
 command_group="hpnews"
 remote_user="pi"
 binary_name="hpfeed"
-setup_cmds="/etc/init.d/hpfeed.sh stop && rm ${command_dir}/${binary_name} && mv ${copy_dir}/${binary_name} ${command_dir}/ && chown ${command_user}:${command_group} ${command_dir}/${binary_name} && /etc/init.d/hpfeed.sh start"
 
 echo "--> changing to project dir ${project_dir}..."
 cd ${project_dir}
