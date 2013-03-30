@@ -1,15 +1,19 @@
 # Introduction
-This app grabs new posts in hamburg privateers forum from http://www.kickern-hamburg.de/phpBB2/ and provides them as an rss feed.
+This app grabs new posts in hamburg privateers forum from http://www.kickern-hamburg.de/phpBB2/ and provides them as an rss 2.0 feed.
 
 # The way it works
-* check whether the macos is at home. The script continues only in this case.
-* wakes the remote time machine up if it is offline
-* saves the data if the time machine is available
-* shuts down the remote time machine if it was offline
+* logs in to the forum
+* grabs the forum overview from hamburg privateers forum
+* logs out from the forum
+* persists all new postings
+* provides an rss 2.0 feed with all postings
 
 # Setup
+* install Mongodb/couchdb and create a db
 * clone this repo
-* instantiate the backup class and call the method startBackupProcess in a starterfile. Example:  
+* customise hpfeed.conf and copy it to the destination folder
+* customise scripts/hpfeed.sh and copy the hpfeed.sh to the start/stop folder
+* customise scripts/deploy.sh and execute it.  
 
 # Dependencies
 * golang
