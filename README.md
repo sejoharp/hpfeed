@@ -11,6 +11,7 @@ This app grabs new posts in hamburg privateers forum from http://www.kickern-ham
 # Setup
 * install Mongodb/couchdb and create a db
 * clone this repo
+* call "go get" to download all dependencies 
 * customise hpfeed.conf and copy it to the destination folder
 * customise scripts/hpfeed.sh and copy the hpfeed.sh to the start/stop folder
 * customise scripts/deploy.sh and execute it.  
