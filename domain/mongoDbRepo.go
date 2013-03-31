@@ -60,6 +60,9 @@ func (this *MongoDbNewsRepo) GetAllMessages() []*Message {
 }
 
 func messageToNews(message *Message) *News {
+	if message.ID == "" {
+		return &News{Topic: message.Topic, Date: message.Date, Link: message.Link}
+	}
 	return &News{
 		Topic: message.Topic,
 		Date:  message.Date,

@@ -30,6 +30,6 @@ func createItem(message *usecases.Message) *moverss.Item {
 		Title: message.Topic,
 		Link:  message.Link,
 		Guid:  message.Link,
-		PubDate: message.Date.Format(time.RFC822)}
+		PubDate: message.Date.UTC().Format(time.RFC822)}
 	return item
 }
