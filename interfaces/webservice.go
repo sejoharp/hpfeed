@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	"hpfeed/helper"
-	"hpfeed/usecases"
+	"bitbucket.org/joscha/hpfeed/helper"
+	"bitbucket.org/joscha/hpfeed/usecases"
 	"net/http"
 	"strconv"
 )

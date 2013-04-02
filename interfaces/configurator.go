@@ -1,8 +1,8 @@
 package interfaces
 
 import (
+	"bitbucket.org/joscha/hpfeed/helper"
 	"code.google.com/p/goconf/conf"
-	"hpfeed/helper"
 )
 
 type Config struct {

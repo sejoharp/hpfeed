@@ -1,8 +1,8 @@
 package domain
 
 import (
+	"bitbucket.org/joscha/hpfeed/helper"
 	couch "code.google.com/p/dsallings-couch-go"
-	"hpfeed/helper"
 	"time"
 )
 

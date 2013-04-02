@@ -1,7 +1,7 @@
 package usecases
 
 import (
-	"hpfeed/domain"
+	"bitbucket.org/joscha/hpfeed/domain"
 	"time"
 )
 

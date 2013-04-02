@@ -1,10 +1,10 @@
 package interfaces
 
 import (
+	"bitbucket.org/joscha/hpfeed/helper"
 	"bytes"
 	"exp/html"
 	"github.com/puerkitobio/goquery"
-	"hpfeed/helper"
 	"strings"
 	"time"
 )

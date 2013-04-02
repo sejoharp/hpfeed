@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"hpfeed/usecases"
+	"bitbucket.org/joscha/hpfeed/usecases"
 )
 
 type ForumReaderInterface interface {

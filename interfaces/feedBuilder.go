@@ -1,8 +1,8 @@
 package interfaces
 
 import (
+	"bitbucket.org/joscha/hpfeed/usecases"
 	"github.com/baliw/moverss"
-	"hpfeed/usecases"
 	"strconv"
 	"time"
 )
@@ -27,9 +27,9 @@ func (this *FeedBuilder) Generate(messages []*usecases.Message) []byte {
 
 func createItem(message *usecases.Message) *moverss.Item {
 	item := &moverss.Item{
-		Title: message.Topic,
-		Link:  message.Link,
-		Guid:  message.Link,
+		Title:   message.Topic,
+		Link:    message.Link,
+		Guid:    message.Link,
 		PubDate: message.Date.UTC().Format(time.RFC822)}
 	return item
 }

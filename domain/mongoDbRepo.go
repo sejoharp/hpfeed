@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"hpfeed/helper"
+	"bitbucket.org/joscha/hpfeed/helper"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"time"

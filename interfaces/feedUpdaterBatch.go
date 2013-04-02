@@ -1,9 +1,9 @@
 package interfaces
 
 import (
+	"bitbucket.org/joscha/hpfeed/usecases"
 	"math/rand"
 	"time"
-	"hpfeed/usecases"
 )
 
 type FeedUpdater struct {

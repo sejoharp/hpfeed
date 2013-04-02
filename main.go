@@ -1,10 +1,10 @@
 package main
 
 import (
-	"hpfeed/domain"
-	"hpfeed/helper"
-	"hpfeed/interfaces"
-	"hpfeed/usecases"
+	"bitbucket.org/joscha/hpfeed/domain"
+	"bitbucket.org/joscha/hpfeed/helper"
+	"bitbucket.org/joscha/hpfeed/interfaces"
+	"bitbucket.org/joscha/hpfeed/usecases"
 	"strconv"
 )
 

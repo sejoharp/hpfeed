@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-project_dir="/users/joscha/Documents/workspace/hpfeed/src/hpfeed"
+project_dir="/Users/joscha/Documents/workspace/hpfeed/src/bitbucket.org/joscha/hpfeed"
 destination_ip="10.1.1.3"
 copy_dir="/home/pi"
 command_dir="/home/hpnews"
