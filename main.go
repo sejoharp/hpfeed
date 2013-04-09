@@ -10,7 +10,7 @@ import (
 
 func main() {
 	config := interfaces.CreateNewConfigurator("hpfeed.conf").LoadConfig()
-	newsRepo := domain.CreateMongoDbNewsRepo(config.Dbhost, config.Dbname)
+	newsRepo := domain.CreateCouchDbRepo(config.Dbhost, config.Dbport, config.Dbname)
 	service := usecases.CreateNewMessageInteractor(newsRepo)
 	forumReader := interfaces.CreateNewForumReader(config.ForumUser, config.ForumPasswd)
 	feedUpdaterBatch := interfaces.CreateNewFeedUpdater(config.Updateinterval, service, forumReader)

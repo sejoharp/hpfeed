@@ -3,20 +3,19 @@ package domain
 import (
 	"bitbucket.org/joscha/hpfeed/helper"
 	couch "code.google.com/p/dsallings-couch-go"
+	"strconv"
 	"time"
 )
 
-type Result struct {
-	Rows []MessageResult
+type QueryResult struct {
+	Rows []struct {
+		Id  string `json:"_id"`
+		Key string
+		Doc CouchDBMessage
+	}
 }
 
-type MessageResult struct {
-	Id  string `json:"_id"`
-	Key string
-	Doc MessageRow
-}
-
-type MessageRow struct {
+type CouchDBMessage struct {
 	Id          string `json:"_id"`
 	Rev         string `json:"_rev"`
 	ContentType string `json:"type"`
@@ -25,58 +24,97 @@ type MessageRow struct {
 	Link        string `json:"link"`
 }
 
-type LatestDate struct {
-	Key string
+type CouchDbRepo struct {
+	dbhost string
+	dbport string
+	dbname string
 }
 
-type CouchDbNewsRepo struct {
-	conn *couch.Database
+func CreateCouchDbRepo(dbhost string, dbport string, dbname string) *CouchDbRepo {
+	return &CouchDbRepo{dbhost: dbhost, dbport: dbport, dbname: dbname}
 }
 
-func newCouchDbNewsRepo(dbhost string, dbport string, dbname string) *CouchDbNewsRepo {
-	conn, err := couch.NewDatabase(dbhost, dbport, dbname)
+func (this *CouchDbRepo) getConnection() *couch.Database {
+	conn, err := couch.NewDatabase(this.dbhost, this.dbport, this.dbname)
 	helper.HandleFatalError("db connection error:", err)
-	return &CouchDbNewsRepo{conn: &conn}
+	return &conn
 }
 
-func (this *CouchDbNewsRepo) getAllMessages() []*MessageRow {
-	result := Result{}
-	err := this.conn.Query("_design/messages/_view/by_date", map[string]interface{}{"include_docs": true, "descending": true}, &result)
+func (this *CouchDbRepo) GetAllMessages() []*Message {
+	var result QueryResult
+
+	err := this.getConnection().Query("_design/messages/_view/by_date", map[string]interface{}{"include_docs": true, "descending": true}, &result)
 	helper.HandleFatalError("query all messages failed:", err)
 
-	messages := make([]*MessageRow, 0)
+	messages := make([]*Message, 0)
 	for i, _ := range result.Rows {
-		messages = append(messages, &result.Rows[i].Doc)
+		messages = append(messages, convertCouchDbToMessage(&result.Rows[i].Doc))
 	}
 	return messages
 }
 
-func (this *CouchDbNewsRepo) getLatestMessageDate() time.Time {
-	var result struct {
-		Rows []struct {
-			Key string
-		}
-	}
-	err := this.conn.Query("_design/messages/_view/by_date", map[string]interface{}{"limit": 1, "descending": true}, &result)
-	helper.HandleFatalError("query query messages_by_date failed:", err)
-	var dateResult time.Time
+func (this *CouchDbRepo) GetLatestMessageDate() time.Time {
+	var result QueryResult
+
+	err := this.getConnection().Query("_design/messages/_view/by_date", map[string]interface{}{"limit": 1, "descending": true}, &result)
+	helper.HandleFatalError("getting latest message date failed:", err)
 	if len(result.Rows) == 0 {
 		return time.Date(1990, 01, 01, 0, 0, 0, 0, time.UTC)
 	}
-	dateResult, err = time.Parse(time.RFC3339, result.Rows[0].Key)
+	unixtimestamp, err := strconv.ParseInt(result.Rows[0].Key, 10, 64)
 	helper.HandleFatalError("parsing last date from db failed:", err)
-	return dateResult
+	return time.Unix(unixtimestamp, 0)
 }
 
-func (this *CouchDbNewsRepo) saveMessage(message *MessageRow) (string, string, error) {
-	message.ContentType = "news"
-	return this.conn.Insert(message)
-}
-
-func (this *CouchDbNewsRepo) saveNewMessages(connection *couch.Database, messages []*MessageRow) {
-	for _, message := range messages {
-		message.ContentType = "news"
-		_, _, err := this.conn.Insert(message)
-		helper.HandleFatalError("error inserting message:", err)
+func (this *CouchDbRepo) StoreAll(messages []*Message) {
+	couchDbMessageList := convertAllMessagesToCouchDb(messages)
+	for _, couchDbMessage := range couchDbMessageList {
+		couchDbMessage.ContentType = "news"
+		_, _, err := this.getConnection().Insert(couchDbMessage)
+		helper.HandleFatalError("error inserting couchDbMessage:", err)
 	}
+}
+
+func convertMessageToCouchDb(message *Message) *CouchDBMessage {
+	if message.ID == "" {
+		return &CouchDBMessage{
+			Topic: message.Topic,
+			Date:  strconv.FormatInt(message.Date.Unix(),10),
+			Link:  message.Link}
+	}
+	return &CouchDBMessage{
+		Topic: message.Topic,
+		Date:  strconv.FormatInt(message.Date.Unix(),10),
+		Link:  message.Link,
+		Id:    message.ID}
+}
+
+func convertAllMessagesToCouchDb(messages []*Message) []*CouchDBMessage {
+	couchDbMessageList := make([]*CouchDBMessage, 0)
+	for _, message := range messages {
+		couchDbMessageList = append(couchDbMessageList, convertMessageToCouchDb(message))
+	}
+	return couchDbMessageList
+}
+
+func convertCouchDbToMessage(couchDbMessage *CouchDBMessage) *Message {
+	return &Message{
+		Topic: couchDbMessage.Topic,
+		Date:  time.Unix(stringToInt64(couchDbMessage.Date), 0),
+		Link:  couchDbMessage.Link,
+		ID:    couchDbMessage.Id}
+}
+
+func convertAllCouchDbToMesssages(couchDbMessageList []*CouchDBMessage) []*Message {
+	messages := make([]*Message, 0)
+	for _, couchDbMessage := range couchDbMessageList {
+		messages = append(messages, convertCouchDbToMessage(couchDbMessage))
+	}
+	return messages
+}
+
+func stringToInt64(raw string) int64 {
+	result, err := strconv.ParseInt(raw, 10, 64)
+	helper.HandleFatalError("parsing string to int64 failed:", err)
+	return result
 }

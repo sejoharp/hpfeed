@@ -11,6 +11,7 @@ type Config struct {
 	ListenPath     string
 	Dbname         string
 	Dbhost         string
+	Dbport         string
 	ForumPasswd    string
 	ForumUser      string
 }
@@ -36,6 +37,8 @@ func (this *Configurator) LoadConfig() *Config {
 	helper.HandleFatalError("listenPath", err)
 	config.Dbhost, err = configFile.GetString("", "dbhost")
 	helper.HandleFatalError("dbhost", err)
+	config.Dbport, err = configFile.GetString("", "dbport")
+	helper.HandleFatalError("dbport", err)
 	config.Dbname, err = configFile.GetString("", "dbname")
 	helper.HandleFatalError("dbname", err)
 	config.ForumUser, err = configFile.GetString("", "forumUser")

@@ -28,5 +28,5 @@ This app grabs new posts in hamburg privateers forum from http://www.kickern-ham
 
 # My setup
 * A raspberry pi with raspbian linux
-* mongodb
-* Genghis from http://genghisapp.com/ to manage the db
+* couchdb
+

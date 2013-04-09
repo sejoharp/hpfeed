@@ -18,7 +18,9 @@ type Thread struct {
 const RAW_DATE_FORMAT = "02.01.2006, 15:04"
 
 func GenerateDocument(rawData []byte) *goquery.Document {
-	node, err := html.Parse(bytes.NewReader(rawData))
+	utf8String := toUtf8(rawData)
+	utf8byteArray := []byte(utf8String)
+	node, err := html.Parse(bytes.NewReader(utf8byteArray))
 	helper.HandleFatalError("document generation failed:", err)
 	return goquery.NewDocumentFromNode(node)
 }
@@ -36,6 +38,14 @@ func ParseThreads(doc *goquery.Document) []*Thread {
 		}
 	})
 	return threads
+}
+
+func toUtf8(iso8859_1_buf []byte) string {
+	buf := make([]rune, len(iso8859_1_buf))
+	for i, b := range iso8859_1_buf {
+		buf[i] = rune(b)
+	}
+	return string(buf)
 }
 
 func parseDate(rawDate string) time.Time {
