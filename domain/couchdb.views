@@ -1,0 +1,10 @@
+{
+   "_id": "_design/messages",
+   "_rev": "1-c75cff9ad8bad329bb86960da147b569",
+   "language": "javascript",
+   "views": {
+       "by_date": {
+           "map": "function(doc) {  emit(doc.date, null);}"
+       }
+   }
+}
