@@ -25,10 +25,11 @@ func main() {
 }
 
 func logConfig(config *interfaces.Config) {
-	helper.LogInfo("updateinterval: " + strconv.Itoa(config.Updateinterval))
-	helper.LogInfo("listen port: " + strconv.Itoa(config.ListenPort))
-	helper.LogInfo("listen path: " + config.ListenPath)
-	helper.LogInfo("dbhost: " + config.Dbhost)
-	helper.LogInfo("dbname: " + config.Dbname)
-	helper.LogInfo("forum user: " + config.ForumUser)
+	helper.LogInfo("config for updateinterval: " + strconv.Itoa(config.Updateinterval))
+	helper.LogInfo("config for listen port: " + strconv.Itoa(config.ListenPort))
+	helper.LogInfo("config for listen path: " + config.ListenPath)
+	helper.LogInfo("config for dbhost: " + config.Dbhost)
+	helper.LogInfo("config for dbname: " + config.Dbname)
+	helper.LogInfo("config for dbport: " + config.Dbport)
+	helper.LogInfo("config for forum user: " + config.ForumUser)
 }
