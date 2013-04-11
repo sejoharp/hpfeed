@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-project_dir="/Users/joscha/Documents/workspace/hpfeed/src/bitbucket.org/joscha/hpfeed"
+project_dir="/Users/joscha/Documents/workspace/gocode/src/bitbucket.org/joscha/hpfeed"
 destination_ip="10.1.1.3"
 copy_dir="/home/pi"
 command_dir="/home/hpnews"
@@ -14,7 +14,7 @@ echo "--> changing to project dir ${project_dir}..."
 cd ${project_dir}
 
 echo "--> compiling binary for ${binary_name}..."
-GOPATH=/users/joscha/Documents/workspace/hpfeed
+GOPATH=/Users/joscha/Documents/workspace/gocode/
 env \
   GOOS=linux \
   GOARCH=arm \
