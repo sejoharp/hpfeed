@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides:       hpfeed
-# Required-Start: $local_fs $syslog
+# Required-Start: $local_fs $syslog couchdb
 # Required-Stop:  $local_fs $syslog
 # Default-Start:  2 3 4 5
 # Default-Stop:   0 1 6
@@ -26,7 +26,7 @@ start()
     echo "Starting $NAME."
     cd $CONFDIR
     su -c "$CONFDIR/$BINARY $PARAMS >> $LOGFILE 2>&1 &" $USER && echo "OK" || echo "failed"
-    ps -u $USER | grep $BINARY | cut -d " " -f2 > $PID
+    ps -u $USER | grep $BINARY | cut -d "?" -f1 > $PID
 }
 
 stop()
