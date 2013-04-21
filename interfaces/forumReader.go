@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"fmt"
+	"bitbucket.org/joscha/hpfeed/helper"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -30,7 +30,7 @@ func (this *ForumReader) login(client *http.Client) {
 	params := url.Values{"username": []string{this.forumUser}, "password": []string{this.forumPasswd}, "login": {"anmelden"}}
 	resp, err := client.PostForm("http://kickern-hamburg.de/phpBB2/login.php", params)
 	if err != nil {
-		fmt.Println(err)
+		helper.HandleFatalError("login error: ", err)
 	}
 	resp.Body.Close()
 }
@@ -38,7 +38,7 @@ func (this *ForumReader) login(client *http.Client) {
 func (this *ForumReader) getHTMLData(client *http.Client) []byte {
 	resp, err := client.Get("http://kickern-hamburg.de/phpBB2/viewforum.php?f=15")
 	if err != nil {
-		fmt.Println(err)
+		helper.HandleFatalError("reading data error: ", err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
@@ -50,7 +50,7 @@ func (this *ForumReader) logout(client *http.Client) {
 	logoutUrl := "http://kickern-hamburg.de/phpBB2/login.php?logout=true&sid=" + sessionId
 	resp, err := client.Get(logoutUrl)
 	if err != nil {
-		fmt.Println(err)
+		helper.HandleFatalError("logout error: ", err)
 	}
 	resp.Body.Close()
 }
