@@ -1,6 +1,7 @@
 package interfaces
 
 import (
+	"bitbucket.org/joscha/hpfeed/helper"
 	"bitbucket.org/joscha/hpfeed/usecases"
 	"math/rand"
 	"time"
@@ -27,10 +28,14 @@ func (this *FeedUpdater) StartFeedUpdateCycle() {
 }
 
 func (this *FeedUpdater) updateFeedData() {
-	rawData := this.forumReader.GetData()
-	doc := GenerateDocument(rawData)
-	threads := ParseThreads(doc)
-	this.service.StoreNewMessages(convertAllThreadsToMesssages(threads))
+	if this.forumReader.IsAvailable() {
+		rawData := this.forumReader.GetData()
+		doc := GenerateDocument(rawData)
+		threads := ParseThreads(doc)
+		this.service.StoreNewMessages(convertAllThreadsToMesssages(threads))
+	} else {
+		helper.LogError("forum is offline.")
+	}
 }
 
 func convertThreadToMessage(thread *Thread) *usecases.Message {

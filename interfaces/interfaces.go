@@ -6,6 +6,7 @@ import (
 
 type ForumReaderInterface interface {
 	GetData() []byte
+	IsAvailable() bool 
 }
 
 type FeedBuilderInterface interface {
