@@ -9,7 +9,7 @@ import (
 )
 
 func loadDoc(page string) *goquery.Document {
-	if f, e := os.Open(fmt.Sprintf("../testdata/%s", page)); e != nil {
+	if f, e := os.Open(fmt.Sprintf("testdata/%s", page)); e != nil {
 		panic(e.Error())
 	} else {
 		defer f.Close()
