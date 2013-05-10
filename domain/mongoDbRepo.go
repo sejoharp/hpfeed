@@ -29,7 +29,7 @@ func (this *MongoDbNewsRepo) getNewsCollection() *mgo.Collection {
 	return session.DB(this.dbname).C("news")
 }
 
-func (this *MongoDbNewsRepo) StoreAll(messages []*Message) {
+func (this *MongoDbNewsRepo) StoreAll(messages []*DbMessage) {
 	collection := this.getNewsCollection()
 	defer collection.Database.Session.Close()
 	newsList := convertAllMessagesToNews(messages)
@@ -49,7 +49,7 @@ func (this *MongoDbNewsRepo) GetLatestMessageDate() time.Time {
 	return result.Date
 }
 
-func (this *MongoDbNewsRepo) GetAllMessages() []*Message {
+func (this *MongoDbNewsRepo) GetAllMessages() []*DbMessage {
 	collection := this.getNewsCollection()
 	defer collection.Database.Session.Close()
 
@@ -59,7 +59,7 @@ func (this *MongoDbNewsRepo) GetAllMessages() []*Message {
 	return convertAllNewsToMesssages(result)
 }
 
-func messageToNews(message *Message) *News {
+func messageToNews(message *DbMessage) *News {
 	if message.ID == "" {
 		return &News{Topic: message.Topic, Date: message.Date, Link: message.Link}
 	}
@@ -70,7 +70,7 @@ func messageToNews(message *Message) *News {
 		ID:    bson.ObjectIdHex(message.ID)}
 }
 
-func convertAllMessagesToNews(messages []*Message) []*News {
+func convertAllMessagesToNews(messages []*DbMessage) []*News {
 	newsList := make([]*News, 0)
 	for _, message := range messages {
 		newsList = append(newsList, messageToNews(message))
@@ -78,16 +78,16 @@ func convertAllMessagesToNews(messages []*Message) []*News {
 	return newsList
 }
 
-func newsToMessage(news *News) *Message {
-	return &Message{
+func newsToMessage(news *News) *DbMessage {
+	return &DbMessage{
 		Topic: news.Topic,
 		Date:  news.Date,
 		Link:  news.Link,
 		ID:    news.ID.Hex()}
 }
 
-func convertAllNewsToMesssages(newsList []*News) []*Message {
-	messages := make([]*Message, 0)
+func convertAllNewsToMesssages(newsList []*News) []*DbMessage {
+	messages := make([]*DbMessage, 0)
 	for _, news := range newsList {
 		messages = append(messages, newsToMessage(news))
 	}

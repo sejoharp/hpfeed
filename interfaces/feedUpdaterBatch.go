@@ -34,16 +34,16 @@ func (this *FeedUpdater) updateFeedData() {
 		threads := ParseThreads(doc)
 		this.service.StoreNewMessages(convertAllThreadsToMesssages(threads))
 	} else {
-		helper.LogError("forum is offline.")
+		helper.LogError("The forum is offline.")
 	}
 }
 
-func convertThreadToMessage(thread *Thread) *usecases.Message {
-	return &usecases.Message{Date: thread.Date, Link: thread.Link, Topic: thread.Topic}
+func convertThreadToMessage(thread *Thread) *usecases.UcMessage {
+	return &usecases.UcMessage{Date: thread.Date, Link: thread.Link, Topic: thread.Topic}
 }
 
-func convertAllThreadsToMesssages(threads []*Thread) []*usecases.Message {
-	messages := make([]*usecases.Message, 0)
+func convertAllThreadsToMesssages(threads []*Thread) []*usecases.UcMessage {
+	messages := make([]*usecases.UcMessage, 0)
 	for _, thread := range threads {
 		messages = append(messages, convertThreadToMessage(thread))
 	}

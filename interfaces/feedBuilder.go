@@ -15,7 +15,7 @@ func CreateNewFeedBuilder(updateInterval int) *FeedBuilder {
 	return &FeedBuilder{updateInterval: updateInterval}
 }
 
-func (this *FeedBuilder) Generate(messages []*usecases.Message) []byte {
+func (this *FeedBuilder) Generate(messages []*usecases.UcMessage) []byte {
 	channel := moverss.ChannelFactory("Hamburg Privateers", "http://www.kickern-hamburg.de/phpBB2/viewforum.php?f=15", "Hamburg Privateers feed")
 	channel.SetTTL(strconv.Itoa(this.updateInterval))
 	for _, message := range messages {
@@ -25,7 +25,7 @@ func (this *FeedBuilder) Generate(messages []*usecases.Message) []byte {
 	return channel.Publish()
 }
 
-func createItem(message *usecases.Message) *moverss.Item {
+func createItem(message *usecases.UcMessage) *moverss.Item {
 	item := &moverss.Item{
 		Title:   message.Topic,
 		Link:    message.Link,

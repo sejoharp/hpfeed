@@ -5,12 +5,12 @@ import (
 )
 
 type NewsRepositoryInterface interface {
-	StoreAll(messages []*Message)
+	StoreAll(messages []*DbMessage)
 	GetLatestMessageDate() time.Time
-	GetAllMessages() []*Message
+	GetAllMessages() []*DbMessage
 }
 
-type Message struct {
+type DbMessage struct {
 	Topic string
 	Date  time.Time
 	Link  string

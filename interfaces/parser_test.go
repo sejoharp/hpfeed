@@ -3,9 +3,9 @@ package interfaces
 import (
 	"exp/html"
 	"fmt"
+	. "github.com/ghthor/gospec"
 	"github.com/puerkitobio/goquery"
 	"os"
-	"testing"
 )
 
 func loadDoc(page string) *goquery.Document {
@@ -22,30 +22,22 @@ func loadDoc(page string) *goquery.Document {
 	return nil
 }
 
-func TestParseDate(t *testing.T) {
-	expectedDateString := "13.01.2013, 18:52"
-	resultDate := parseDate(expectedDateString)
-	resultDateString := resultDate.Format(RAW_DATE_FORMAT)
-	if expectedDateString != resultDateString {
-		t.Errorf("Parsing date failed. expected: %s, result: %s", expectedDateString, resultDateString)
-	}
-}
+func ParserSpec(c Context) {
+	c.Specify("It parses the date.", func() {
+		expectedDateString := "13.01.2013, 18:52"
+		resultDate := parseDate(expectedDateString)
+		resultDateString := resultDate.Format(RAW_DATE_FORMAT)
+		c.Expect(resultDateString, Equals, expectedDateString)
+	})
+	c.Specify("It parses the data from the latest posts.", func() {
+		doc := loadDoc("forum.html")
+		threads := ParseThreads(doc)
+		c.Expect(len(threads), Equals, 26)
 
-func TestParsing(t *testing.T) {
-	doc := loadDoc("forum.html")
-	threads := ParseThreads(doc)
-	if amount := len(threads); amount != 26 {
-		t.Errorf("Parsing amount failed. Parsed: %d", amount)
-	}
-	thread := threads[0]
-	if topic := thread.Topic; topic != "Saison 2012" {
-		t.Errorf("Parsing amount failed. Parsed: %s", topic)
-	}
-	inputDate := "13.01.2013, 18:52"
-	if date := thread.Date.Format(RAW_DATE_FORMAT); date != inputDate {
-		t.Errorf("Parsing date failed. Parsed: %s", date)
-	}
-	if link := thread.Link; link != "http://www.kickern-hamburg.de/phpBB2/viewtopic.php?p=55873#55873" {
-		t.Errorf("Parsing link failed. Parsed: %s", link)
-	}
+		thread := threads[0]
+		c.Expect(thread.Topic, Equals, "Saison 2012")
+
+		c.Expect(thread.Date.Format(RAW_DATE_FORMAT), Equals, "13.01.2013, 18:52")
+		c.Expect(thread.Link, Equals, "http://www.kickern-hamburg.de/phpBB2/viewtopic.php?p=55873#55873")
+	})
 }

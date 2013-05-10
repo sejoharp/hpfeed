@@ -13,17 +13,17 @@ func CreateNewMessageInteractor(newsRepo domain.NewsRepositoryInterface) *Messag
 	return &MessageInteractor{newsRepo: newsRepo}
 }
 
-func (this *MessageInteractor) GetAllMessages() []*Message {
+func (this *MessageInteractor) GetAllMessages() []*UcMessage {
 	return convertAllToUsecaseMessages(this.newsRepo.GetAllMessages())
 }
 
-func (this *MessageInteractor) StoreNewMessages(messages []*Message) {
+func (this *MessageInteractor) StoreNewMessages(messages []*UcMessage) {
 	newMessages := determineNewMessage(messages, this.newsRepo.GetLatestMessageDate())
 	this.newsRepo.StoreAll(convertAllToDomainMessages(newMessages))
 }
 
-func determineNewMessage(allMessages []*Message, latestMessageDate time.Time) []*Message {
-	newMessages := make([]*Message, 0)
+func determineNewMessage(allMessages []*UcMessage, latestMessageDate time.Time) []*UcMessage {
+	newMessages := make([]*UcMessage, 0)
 	for _, message := range allMessages {
 		if message.Date.After(latestMessageDate) {
 			newMessages = append(newMessages, message)

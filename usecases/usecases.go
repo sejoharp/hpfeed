@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Message struct {
+type UcMessage struct {
 	Topic string
 	Date  time.Time
 	Link  string
@@ -13,28 +13,28 @@ type Message struct {
 }
 
 type MessageInteractorInterface interface {
-	GetAllMessages() []*Message
-	StoreNewMessages(messages []*Message)
+	GetAllMessages() []*UcMessage
+	StoreNewMessages(messages []*UcMessage)
 }
 
-func convertToDomainMessage(message *Message) *domain.Message {
-	return &domain.Message{Topic: message.Topic, Date: message.Date, Link: message.Link, ID: message.ID}
+func convertToDomainMessage(message *UcMessage) *domain.DbMessage {
+	return &domain.DbMessage{Topic: message.Topic, Date: message.Date, Link: message.Link, ID: message.ID}
 }
 
-func convertToUsecaseMessage(message *domain.Message) *Message {
-	return &Message{Topic: message.Topic, Date: message.Date, Link: message.Link, ID: message.ID}
+func convertToUsecaseMessage(message *domain.DbMessage) *UcMessage {
+	return &UcMessage{Topic: message.Topic, Date: message.Date, Link: message.Link, ID: message.ID}
 }
 
-func convertAllToUsecaseMessages(messages []*domain.Message) []*Message {
-	usecaseMessages := make([]*Message, 0)
+func convertAllToUsecaseMessages(messages []*domain.DbMessage) []*UcMessage {
+	usecaseMessages := make([]*UcMessage, 0)
 	for _, message := range messages {
 		usecaseMessages = append(usecaseMessages, convertToUsecaseMessage(message))
 	}
 	return usecaseMessages
 }
 
-func convertAllToDomainMessages(messages []*Message) []*domain.Message {
-	domainMessages := make([]*domain.Message, 0)
+func convertAllToDomainMessages(messages []*UcMessage) []*domain.DbMessage {
+	domainMessages := make([]*domain.DbMessage, 0)
 	for _, message := range messages {
 		domainMessages = append(domainMessages, convertToDomainMessage(message))
 	}

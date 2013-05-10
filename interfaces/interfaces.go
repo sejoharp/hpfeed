@@ -10,5 +10,5 @@ type ForumReaderInterface interface {
 }
 
 type FeedBuilderInterface interface {
-	Generate(messages []*usecases.Message) []byte
+	Generate(messages []*usecases.UcMessage) []byte
 }

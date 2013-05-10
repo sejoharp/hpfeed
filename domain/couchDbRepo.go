@@ -40,13 +40,13 @@ func (this *CouchDbRepo) getConnection() *couch.Database {
 	return &conn
 }
 
-func (this *CouchDbRepo) GetAllMessages() []*Message {
+func (this *CouchDbRepo) GetAllMessages() []*DbMessage {
 	var result QueryResult
 
 	err := this.getConnection().Query("_design/messages/_view/by_date", map[string]interface{}{"include_docs": true, "descending": true}, &result)
 	helper.HandleFatalError("query all messages failed:", err)
 
-	messages := make([]*Message, 0)
+	messages := make([]*DbMessage, 0)
 	for i, _ := range result.Rows {
 		messages = append(messages, convertCouchDbToMessage(&result.Rows[i].Doc))
 	}
@@ -66,7 +66,7 @@ func (this *CouchDbRepo) GetLatestMessageDate() time.Time {
 	return time.Unix(unixtimestamp, 0)
 }
 
-func (this *CouchDbRepo) StoreAll(messages []*Message) {
+func (this *CouchDbRepo) StoreAll(messages []*DbMessage) {
 	couchDbMessageList := convertAllMessagesToCouchDb(messages)
 	for _, couchDbMessage := range couchDbMessageList {
 		couchDbMessage.ContentType = "news"
@@ -75,7 +75,7 @@ func (this *CouchDbRepo) StoreAll(messages []*Message) {
 	}
 }
 
-func convertMessageToCouchDb(message *Message) *CouchDBMessage {
+func convertMessageToCouchDb(message *DbMessage) *CouchDBMessage {
 	if message.ID == "" {
 		return &CouchDBMessage{
 			Topic: message.Topic,
@@ -89,7 +89,7 @@ func convertMessageToCouchDb(message *Message) *CouchDBMessage {
 		Id:    message.ID}
 }
 
-func convertAllMessagesToCouchDb(messages []*Message) []*CouchDBMessage {
+func convertAllMessagesToCouchDb(messages []*DbMessage) []*CouchDBMessage {
 	couchDbMessageList := make([]*CouchDBMessage, 0)
 	for _, message := range messages {
 		couchDbMessageList = append(couchDbMessageList, convertMessageToCouchDb(message))
@@ -97,16 +97,16 @@ func convertAllMessagesToCouchDb(messages []*Message) []*CouchDBMessage {
 	return couchDbMessageList
 }
 
-func convertCouchDbToMessage(couchDbMessage *CouchDBMessage) *Message {
-	return &Message{
+func convertCouchDbToMessage(couchDbMessage *CouchDBMessage) *DbMessage {
+	return &DbMessage{
 		Topic: couchDbMessage.Topic,
 		Date:  time.Unix(stringToInt64(couchDbMessage.Date), 0),
 		Link:  couchDbMessage.Link,
 		ID:    couchDbMessage.Id}
 }
 
-func convertAllCouchDbToMesssages(couchDbMessageList []*CouchDBMessage) []*Message {
-	messages := make([]*Message, 0)
+func convertAllCouchDbToMesssages(couchDbMessageList []*CouchDBMessage) []*DbMessage {
+	messages := make([]*DbMessage, 0)
 	for _, couchDbMessage := range couchDbMessageList {
 		messages = append(messages, convertCouchDbToMessage(couchDbMessage))
 	}
