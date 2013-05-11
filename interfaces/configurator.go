@@ -3,6 +3,7 @@ package interfaces
 import (
 	"bitbucket.org/joscha/hpfeed/helper"
 	"code.google.com/p/goconf/conf"
+	"strconv"
 )
 
 type Config struct {
@@ -18,6 +19,16 @@ type Config struct {
 
 type Configurator struct {
 	configFilename string
+}
+
+func (this *Config) Log() {
+	helper.LogInfo("config for updateinterval: " + strconv.Itoa(this.Updateinterval))
+	helper.LogInfo("config for listen port: " + strconv.Itoa(this.ListenPort))
+	helper.LogInfo("config for listen path: " + this.ListenPath)
+	helper.LogInfo("config for dbhost: " + this.Dbhost)
+	helper.LogInfo("config for dbname: " + this.Dbname)
+	helper.LogInfo("config for dbport: " + this.Dbport)
+	helper.LogInfo("config for forum user: " + this.ForumUser)
 }
 
 func CreateNewConfigurator(configFilename string) *Configurator {
