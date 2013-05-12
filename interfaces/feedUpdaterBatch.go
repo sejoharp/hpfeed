@@ -11,17 +11,23 @@ type FeedUpdater struct {
 	updateInterval int
 	service        usecases.MessageInteractorInterface
 	forumReader    ForumReaderInterface
+	ticker         *time.Ticker
 }
 
 func CreateNewFeedUpdater(updateInterval int, service usecases.MessageInteractorInterface, forumReader ForumReaderInterface) *FeedUpdater {
 	return &FeedUpdater{updateInterval: updateInterval, service: service, forumReader: forumReader}
 }
 
+func (this *FeedUpdater) StopFeedUpdateCycle() {
+	this.ticker.Stop()
+}
+
 func (this *FeedUpdater) StartFeedUpdateCycle() {
 	this.updateFeedData()
+	duration := time.Duration(rand.Intn(this.updateInterval)) * time.Minute
+	this.ticker = time.NewTicker(duration)
 	go func() {
-		for {
-			time.Sleep(time.Duration(rand.Intn(this.updateInterval)) * time.Minute)
+		for _ = range this.ticker.C {
 			this.updateFeedData()
 		}
 	}()
