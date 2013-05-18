@@ -9,22 +9,23 @@ import (
 
 type FeedUpdater struct {
 	updateInterval int
-	service        usecases.MessageInteractorInterface
+	interactor     usecases.MessageInteractorInterface
 	forumReader    ForumReaderInterface
 	ticker         *time.Ticker
+	parser         ParserInterface
 }
 
-func CreateNewFeedUpdater(updateInterval int, service usecases.MessageInteractorInterface, forumReader ForumReaderInterface) *FeedUpdater {
-	return &FeedUpdater{updateInterval: updateInterval, service: service, forumReader: forumReader}
+func CreateNewFeedUpdater(updateInterval int, interactor usecases.MessageInteractorInterface, forumReader ForumReaderInterface, parser ParserInterface) *FeedUpdater {
+	return &FeedUpdater{updateInterval: updateInterval, interactor: interactor, forumReader: forumReader, parser: parser}
 }
 
-func (this *FeedUpdater) StopFeedUpdateCycle() {
+func (this *FeedUpdater) Stop() {
 	this.ticker.Stop()
 }
 
-func (this *FeedUpdater) StartFeedUpdateCycle() {
+func (this *FeedUpdater) Start() {
 	this.updateFeedData()
-	duration := time.Duration(rand.Intn(this.updateInterval)) * time.Minute
+	duration := time.Duration(rand.Intn(this.updateInterval)) * time.Second
 	this.ticker = time.NewTicker(duration)
 	go func() {
 		for _ = range this.ticker.C {
@@ -36,9 +37,9 @@ func (this *FeedUpdater) StartFeedUpdateCycle() {
 func (this *FeedUpdater) updateFeedData() {
 	if this.forumReader.IsAvailable() {
 		rawData := this.forumReader.GetData()
-		doc := GenerateDocument(rawData)
-		threads := ParseThreads(doc)
-		this.service.StoreNewMessages(convertAllThreadsToMesssages(threads))
+		doc := this.parser.GenerateDocument(rawData)
+		threads := this.parser.ParseThreads(doc)
+		this.interactor.StoreNewMessages(convertAllThreadsToMesssages(threads))
 	} else {
 		helper.LogError("The forum is offline.")
 	}
