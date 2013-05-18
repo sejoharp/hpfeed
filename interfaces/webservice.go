@@ -32,14 +32,6 @@ func CreateNewWebservice(
 		listenPath:  listenPath}
 }
 
-func (this *Webservice) StartHttpserver() {
-	http.HandleFunc("/"+this.listenPath, func(res http.ResponseWriter, req *http.Request) {
-		this.feedHandler(res, req)
-	})
-	err := http.ListenAndServe(":"+strconv.Itoa(this.listenPort), nil)
-	helper.HandleFatalError("starting http server failed:", err)
-}
-
 func (this *Webservice) feedHandler(responseWriter http.ResponseWriter, request *http.Request) {
 	allMessages := this.interactor.GetAllMessages()
 	response := this.feedBuilder.Generate(allMessages)
