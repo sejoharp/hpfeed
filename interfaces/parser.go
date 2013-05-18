@@ -15,9 +15,13 @@ type Thread struct {
 	Link  string
 }
 
+type Parser struct{}
+
+func CreateNewParser() *Parser { return &Parser{} }
+
 const RAW_DATE_FORMAT = "02.01.2006, 15:04"
 
-func GenerateDocument(rawData []byte) *goquery.Document {
+func (this *Parser) GenerateDocument(rawData []byte) *goquery.Document {
 	utf8String := toUtf8(rawData)
 	utf8byteArray := []byte(utf8String)
 	node, err := html.Parse(bytes.NewReader(utf8byteArray))
@@ -25,7 +29,7 @@ func GenerateDocument(rawData []byte) *goquery.Document {
 	return goquery.NewDocumentFromNode(node)
 }
 
-func ParseThreads(doc *goquery.Document) []*Thread {
+func (this *Parser) ParseThreads(doc *goquery.Document) []*Thread {
 	threads := make([]*Thread, 0)
 	doc.Find("#Content table tbody > tr").Each(func(i int, s *goquery.Selection) {
 		if s.Children().Length() == 6 {

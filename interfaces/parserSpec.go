@@ -23,6 +23,7 @@ func loadDoc(page string) *goquery.Document {
 }
 
 func ParserSpec(c Context) {
+	parser := CreateNewParser()
 	c.Specify("It parses the date.", func() {
 		expectedDateString := "13.01.2013, 18:52"
 		resultDate := parseDate(expectedDateString)
@@ -31,7 +32,7 @@ func ParserSpec(c Context) {
 	})
 	c.Specify("It parses the data from the latest posts.", func() {
 		doc := loadDoc("forum.html")
-		threads := ParseThreads(doc)
+		threads := parser.ParseThreads(doc)
 		c.Expect(len(threads), Equals, 26)
 
 		thread := threads[0]
