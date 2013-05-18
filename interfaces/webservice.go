@@ -3,22 +3,36 @@ package interfaces
 import (
 	"bitbucket.org/joscha/hpfeed/helper"
 	"bitbucket.org/joscha/hpfeed/usecases"
+	"net"
 	"net/http"
 	"strconv"
 )
 
-type WebserviceHandler struct {
-	service     usecases.MessageInteractorInterface
+type Handler struct {
+	*http.ServeMux
+}
+
+type Webservice struct {
+	interactor  usecases.MessageInteractorInterface
 	feedBuilder FeedBuilderInterface
 	listenPort  int
 	listenPath  string
+	listener    *net.TCPListener
 }
 
-func CreateNewWebserviceHandler(service usecases.MessageInteractorInterface, feedBuilder FeedBuilderInterface, listenPort int, listenPath string) *WebserviceHandler {
-	return &WebserviceHandler{service: service, feedBuilder: feedBuilder, listenPort: listenPort, listenPath: listenPath}
+func CreateNewWebservice(
+	interactor usecases.MessageInteractorInterface,
+	feedBuilder FeedBuilderInterface,
+	listenPort int,
+	listenPath string) *Webservice {
+	return &Webservice{
+		interactor:  interactor,
+		feedBuilder: feedBuilder,
+		listenPort:  listenPort,
+		listenPath:  listenPath}
 }
 
-func (this *WebserviceHandler) StartHttpserver() {
+func (this *Webservice) StartHttpserver() {
 	http.HandleFunc("/"+this.listenPath, func(res http.ResponseWriter, req *http.Request) {
 		this.feedHandler(res, req)
 	})
@@ -26,12 +40,29 @@ func (this *WebserviceHandler) StartHttpserver() {
 	helper.HandleFatalError("starting http server failed:", err)
 }
 
-func (this *WebserviceHandler) feedHandler(responseWriter http.ResponseWriter, request *http.Request) {
+func (this *Webservice) feedHandler(responseWriter http.ResponseWriter, request *http.Request) {
+	allMessages := this.interactor.GetAllMessages()
+	response := this.feedBuilder.Generate(allMessages)
 	responseWriter.Header().Set("Content-Type", "application/rss+xml")
-	responseWriter.Write(this.generateResponse())
+	responseWriter.Write(response)
 }
 
-func (this *WebserviceHandler) generateResponse() []byte {
-	allMessages := this.service.GetAllMessages()
-	return this.feedBuilder.Generate(allMessages)
+func (this *Webservice) Start() {
+	tcpAddr, err := net.ResolveTCPAddr("tcp", ":"+strconv.Itoa(this.listenPort))
+	helper.HandleFatalError("error resolving webservice address.", err)
+	this.listener, err = net.ListenTCP("tcp", tcpAddr)
+	helper.HandleFatalError("error opening webservice port.", err)
+
+	handler := &Handler{ServeMux: http.NewServeMux()}
+
+	handler.ServeMux.HandleFunc("/"+this.listenPath,
+		func(res http.ResponseWriter, req *http.Request) {
+			this.feedHandler(res, req)
+		})
+
+	go http.Serve(this.listener, handler)
+}
+
+func (this *Webservice) Stop() error {
+	return this.listener.Close()
 }
