@@ -3,7 +3,7 @@ package interfaces
 import (
 	"bitbucket.org/joscha/hpfeed/helper"
 	"bytes"
-	"exp/html"
+	"code.google.com/p/go.net/html"
 	"github.com/puerkitobio/goquery"
 	"strings"
 	"time"

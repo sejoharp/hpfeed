@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"exp/html"
+	"code.google.com/p/go.net/html"
 	"fmt"
 	. "github.com/ghthor/gospec"
 	"github.com/puerkitobio/goquery"
