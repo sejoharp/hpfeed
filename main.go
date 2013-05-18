@@ -36,4 +36,5 @@ func main() {
 	helper.LogInfo("--> stopping webservice.")
 	feedUpdaterBatch.Stop()
 	helper.LogInfo("--> stopping update batch.")
+	helper.LogInfo("--> rssfeed stopped.")
 }
