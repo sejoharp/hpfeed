@@ -13,8 +13,14 @@ This app grabs new posts in hamburg privateers forum from http://www.kickern-ham
 * clone this repo
 * call "go get" to download all dependencies 
 * customise hpfeed.conf and copy it to the destination folder
-* customise scripts/hpfeed.sh and copy the hpfeed.sh to the start/stop folder
-* customise scripts/deploy.sh and execute it.  
+** deployment and runtime management:
+*** via hpfeed.sh script:
+**** customise scripts/hpfeed.sh and copy the hpfeed.sh to the start/stop folder
+**** customise scripts/deploy.sh and execute it.
+*** via daemontools:
+**** setup a new service with a run cmd like this:
+	./hpfeed -config=/PATH/TO/CONFIG/hpfeed.conf 2>&1
+**** customise scripts/deploy_daemontools.sh and execute it.   
 
 # Dependencies
 * golang
