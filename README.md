@@ -14,6 +14,7 @@ This app grabs new posts in hamburg privateers forum from http://www.kickern-ham
 ## complie service 
 * clone this repo
 * call "go get" to download all dependencies
+* go build
 ## config service
 * customise hpfeed.conf and copy it to the destination folder
 ## deployment
