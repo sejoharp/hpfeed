@@ -3,8 +3,8 @@ set -eu
 
 project_dir="/Users/joscha/Documents/workspace/gocode/src/bitbucket.org/joscha/hpfeed"
 destination="10.1.1.3"
-command_dir="/srv/hpeed"
 remote_user="joscha"
+command_dir="/home/${remote_user}/bin"
 binary_name="hpfeed"
 binary_name_temp="${binary_name}_new"
 
@@ -24,7 +24,7 @@ echo "--> uploading via scp ..."
 scp ${binary_name} ${remote_user}@${destination}:${command_dir}
 
 echo "--> stopping ${binary_name} ..."
-ssh ${remote_user}@${destination} "svc -d ~/service/${binary_name}"
+ssh ${remote_user}@${destination} "svc -d /home/${remote_user}/service/${binary_name}"
 
 echo "--> delete old version ${binary_name} ..."
 ssh ${remote_user}@${destination} "rm ${command_dir}/${binary_name}"
@@ -33,4 +33,4 @@ echo "--> renaming new version to ${binary_name}  ..."
 ssh ${remote_user}@${destination} "mv ${command_dir}/${binary_name_temp} ${command_dir}/${binary_name}"
 
 echo "--> Starting ${binary_name} ..."
-ssh ${remote_user}@${destination} "svc -u ~/service/${binary_name}"
+ssh ${remote_user}@${destination} "svc -u /home/${remote_user}/service/${binary_name}"
