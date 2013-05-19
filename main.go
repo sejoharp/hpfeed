@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	config := interfaces.CreateNewConfigurator("hpfeed.conf").LoadConfig()
+	config := interfaces.CreateNewConfigurator().LoadConfig()
 	newsRepo := domain.CreateCouchDbRepo(config.Dbhost, config.Dbport, config.Dbname)
 	interactor := usecases.CreateNewMessageInteractor(newsRepo)
 	forumReader := interfaces.CreateNewForumReader(config.ForumUser, config.ForumPasswd)

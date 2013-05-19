@@ -3,6 +3,7 @@ package interfaces
 import (
 	"bitbucket.org/joscha/hpfeed/helper"
 	"code.google.com/p/goconf/conf"
+	"flag"
 	"strconv"
 )
 
@@ -31,14 +32,18 @@ func (this *Config) Log() {
 	helper.LogInfo("config for forum user: " + this.ForumUser)
 }
 
-func CreateNewConfigurator(configFilename string) *Configurator {
-	return &Configurator{configFilename: configFilename}
+func CreateNewConfigurator() *Configurator {
+	return &Configurator{}
 }
 
 func (this *Configurator) LoadConfig() *Config {
+	var configFileName string
+	flag.StringVar(&configFileName, "config", "hpfeed.conf", "path to config file")
+	flag.Parse()
+
 	config := Config{}
-	configFile, err := conf.ReadConfigFile(this.configFilename)
-	helper.HandleFatalError("loading config file failed:", err)
+	configFile, err := conf.ReadConfigFile(configFileName)
+	helper.HandleFatalError("loading config file failed (-config= forgotten):", err)
 
 	config.Updateinterval, err = configFile.GetInt("", "updateinterval")
 	helper.HandleFatalError("updateinterval", err)
