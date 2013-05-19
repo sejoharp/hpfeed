@@ -9,18 +9,21 @@ This app grabs new posts in hamburg privateers forum from http://www.kickern-ham
 * provides an rss 2.0 feed with all postings
 
 # Setup
+## prepare db
 * install Mongodb/couchdb and create a db
+## complie service 
 * clone this repo
-* call "go get" to download all dependencies 
+* call "go get" to download all dependencies
+## config service
 * customise hpfeed.conf and copy it to the destination folder
-** deployment and runtime management:
-*** via hpfeed.sh script:
+## deployment
+choose one method
+### deployment via hpfeed.sh script
 **** customise scripts/hpfeed.sh and copy the hpfeed.sh to the start/stop folder
 **** customise scripts/deploy.sh and execute it.
-*** via daemontools:
-**** setup a new service with a run cmd like this:
-	./hpfeed -config=/PATH/TO/CONFIG/hpfeed.conf 2>&1
-**** customise scripts/deploy_daemontools.sh and execute it.   
+### deployment via daemontools
+* setup a new service with a run cmd like this: ./hpfeed -config=/PATH/TO/CONFIG/hpfeed.conf 2>&1
+* customise scripts/deploy_daemontools.sh and execute it.   
 
 # Dependencies
 * golang
