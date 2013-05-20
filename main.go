@@ -12,7 +12,7 @@ import (
 
 func main() {
 	config := interfaces.CreateNewConfigurator().LoadConfig()
-	newsRepo := domain.CreateCouchDbRepo(config.Dbhost, config.Dbport, config.Dbname)
+	newsRepo := domain.CreateCouchDbRepo(config.Dbhost, config.Dbport, config.Dbname, config.Dbuser, config.Dbpassword)
 	interactor := usecases.CreateNewMessageInteractor(newsRepo)
 	forumReader := interfaces.CreateNewForumReader(config.ForumUser, config.ForumPasswd)
 	parser := interfaces.CreateNewParser()

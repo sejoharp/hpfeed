@@ -25,17 +25,20 @@ type CouchDBMessage struct {
 }
 
 type CouchDbRepo struct {
-	dbhost string
-	dbport string
-	dbname string
+	dbhost     string
+	dbport     string
+	dbname     string
+	dbuser     string
+	dbpassword string
 }
 
-func CreateCouchDbRepo(dbhost string, dbport string, dbname string) *CouchDbRepo {
-	return &CouchDbRepo{dbhost: dbhost, dbport: dbport, dbname: dbname}
+func CreateCouchDbRepo(dbhost, dbport, dbname, dbuser, dbpassword string) *CouchDbRepo {
+	return &CouchDbRepo{dbhost, dbport, dbname, dbuser, dbpassword}
 }
 
 func (this *CouchDbRepo) getConnection() *couch.Database {
-	conn, err := couch.NewDatabase(this.dbhost, this.dbport, this.dbname)
+	dburl := "http://" + this.dbuser + ":" + this.dbpassword + "@" + this.dbhost + ":" + this.dbport + "/" + this.dbname
+	conn, err := couch.Connect(dburl)
 	helper.HandleFatalError("db connection error:", err)
 	return &conn
 }
@@ -79,12 +82,12 @@ func convertMessageToCouchDb(message *DbMessage) *CouchDBMessage {
 	if message.ID == "" {
 		return &CouchDBMessage{
 			Topic: message.Topic,
-			Date:  strconv.FormatInt(message.Date.Unix(),10),
+			Date:  strconv.FormatInt(message.Date.Unix(), 10),
 			Link:  message.Link}
 	}
 	return &CouchDBMessage{
 		Topic: message.Topic,
-		Date:  strconv.FormatInt(message.Date.Unix(),10),
+		Date:  strconv.FormatInt(message.Date.Unix(), 10),
 		Link:  message.Link,
 		Id:    message.ID}
 }

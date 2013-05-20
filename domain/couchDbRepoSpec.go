@@ -8,12 +8,12 @@ import (
 // EXPLORATION TESTS
 func CouchDbRepoSpec(c Context) {
 	c.Specify("db is available", func() {
-		newsRepo := CreateCouchDbRepo("localhost", "5678", "hpfeed")
+		newsRepo := CreateCouchDbRepo("localhost", "5678", "hpfeed", "user", "pw")
 		messages := newsRepo.GetAllMessages()
 		c.Expect(len(messages) > 0, IsTrue)
 	})
 	c.Specify("fetches all values from a hpfeed message", func() {
-		newsRepo := CreateCouchDbRepo("localhost", "5678", "hpfeed")
+		newsRepo := CreateCouchDbRepo("localhost", "5678", "hpfeed", "user", "pw")
 		messages := newsRepo.GetAllMessages()
 
 		c.Expect(messages[0].ID != "", IsTrue)

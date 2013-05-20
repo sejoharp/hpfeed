@@ -14,6 +14,8 @@ type Config struct {
 	Dbname         string
 	Dbhost         string
 	Dbport         string
+	Dbuser         string
+	Dbpassword     string
 	ForumPasswd    string
 	ForumUser      string
 }
@@ -57,6 +59,10 @@ func (this *Configurator) LoadConfig() *Config {
 	helper.HandleFatalError("dbport", err)
 	config.Dbname, err = configFile.GetString("", "dbname")
 	helper.HandleFatalError("dbname", err)
+	config.Dbuser, err = configFile.GetString("", "dbuser")
+	helper.HandleFatalError("dbuser", err)
+	config.Dbpassword, err = configFile.GetString("", "dbpassword")
+	helper.HandleFatalError("dbpassword", err)
 	config.ForumUser, err = configFile.GetString("", "forumUser")
 	helper.HandleFatalError("forumUser", err)
 	config.ForumPasswd, err = configFile.GetString("", "forumPasswd")
