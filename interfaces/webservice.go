@@ -47,7 +47,7 @@ func (this *Webservice) Start() {
 
 	handler := &Handler{ServeMux: http.NewServeMux()}
 
-	handler.ServeMux.HandleFunc("/"+this.listenPath,
+	handler.ServeMux.HandleFunc(this.listenPath,
 		func(res http.ResponseWriter, req *http.Request) {
 			this.feedHandler(res, req)
 		})
