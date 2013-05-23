@@ -6,7 +6,7 @@ command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
 gopath=/home/joscha/gocode 
 
-GIT_DIR=${project_dir}/.git
+GIT_DIR=.git
 GOPATH=${gopath}
 GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
