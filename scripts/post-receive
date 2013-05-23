@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 
+
 project_dir="/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed"
 command_dir="/home/joscha/opt/hpfeed"
 goroot="/home/joscha/opt/go"
