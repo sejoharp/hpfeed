@@ -33,14 +33,14 @@ go build
 echo "--> changing file permission ..."
 chmod 700 ${project_dir}/hpfeed
 
-# echo "--> stopping hpfeed ..."
+echo "--> stopping hpfeed ..."
 svc -d /home/joscha/service/hpfeed
 
-# echo "--> delete old version ..."
+echo "--> delete old version ..."
 rm ${command_dir}/hpfeed
 
-# echo "--> coping to destination ..."
+echo "--> coping to destination ..."
 mv hpfeed ${command_dir}
 
-# echo "--> Starting ..."
+echo "--> Starting ..."
 svc -u /home/joscha/service/hpfeed
