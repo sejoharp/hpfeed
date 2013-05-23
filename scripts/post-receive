@@ -4,6 +4,7 @@ project_dir=/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed
 command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
 gopath=/home/joscha/gocode
+unset GIT_DIR
 
 GOPATH=${gopath}
 GOROOT=${goroot}
