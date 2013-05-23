@@ -1,31 +1,33 @@
-#!/bin/bash
+#!/bin/zsh
 set -eu
 
 project_dir="/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed"
 command_dir="/home/joscha/opt/hpfeed/"
 
 echo "--> checkout source ..."
-export GIT_WORK_TREE=${project_dir}
-git checkout -f master
+GIT_WORK_TREE=${project_dir} git checkout -f master
 
 echo "--> changing to project directory ..."
 cd ${project_dir}
+
+echo "--> installing dependencies ..."
+go get
 
 echo "--> compiling ..."
 GOPATH=${project_dir}
 go build
 
-echo "--> stopping hpfeed ..."
-svc -d /home/joscha/service/hpfeed"
-
-echo "--> delete old version ..."
-rm ${command_dir}/hpfeed
-
-echo "--> coping to destination ..."
-mv hpfeed ${command_dir}
-
 echo "--> changing file permission ..."
-chmod 700 ${command_dir}/hpeed
+chmod 700 ${project_dir}/hpeed
 
-echo "--> Starting ..."
-svc -u /home/joscha/service/${binary_name}"
+# echo "--> stopping hpfeed ..."
+# svc -d /home/joscha/service/hpfeed"
+
+# echo "--> delete old version ..."
+# rm ${command_dir}/hpfeed
+
+# echo "--> coping to destination ..."
+# mv hpfeed ${command_dir}
+
+# echo "--> Starting ..."
+# svc -u /home/joscha/service/${binary_name}"
