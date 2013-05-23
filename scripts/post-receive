@@ -9,9 +9,9 @@ GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
 export GOPATH GOROOT PATH
 
-echo $PATH
-echo $GOPATH
-echo $GOROOT
+echo path: $PATH
+echo gopath: $GOPATH
+echo goroot: $GOROOT
 echo "--> changing to project directory ..."
 cd ${project_dir}
 
