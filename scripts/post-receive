@@ -8,6 +8,7 @@ goroot="/home/joscha/opt/go"
 export GOPATH=${project_dir}
 export GOROOT=${goroot}
 export PATH=$PATH:${goroot}/bin
+export GIT_WORK_TREE=${project_dir}
 
 echo "--> changing to project directory ..."
 cd ${project_dir}
