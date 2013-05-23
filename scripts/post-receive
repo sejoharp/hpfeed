@@ -7,16 +7,18 @@ goroot=/home/joscha/opt/go
 GOPATH=${project_dir}
 GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
-export GOPATH GOROOT PATH
+GIT_WORK_TREE=${project_dir}
+export GOPATH GOROOT PATH GIT_WORK_TREE
 
 echo path: $PATH
 echo gopath: $GOPATH
 echo goroot: $GOROOT
+
 echo "--> changing to project directory ..."
 cd ${project_dir}
 
 echo "--> checkout source ..."
-GIT_WORK_TREE=${project_dir} git checkout -f master
+git checkout -f master
 
 echo "--> installing dependencies ..."
 go get
