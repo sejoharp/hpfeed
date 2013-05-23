@@ -3,13 +3,13 @@
 project_dir=/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed
 command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
-gopath=/home/joscha/gocode
-unset GIT_DIR
+gopath=/home/joscha/gocode 
 
+GIT_DIR=.git
 GOPATH=${gopath}
 GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
-export GOPATH GOROOT PATH
+export GOPATH GOROOT PATH GIT_DIR
 
 echo path: $PATH
 echo gopath: $GOPATH
@@ -17,8 +17,6 @@ echo goroot: $GOROOT
 
 echo "--> changing to project directory ..."
 cd ${project_dir}
-
-unset GIT_DIR
 
 echo "--> checkout source ..."
 git checkout -f master
