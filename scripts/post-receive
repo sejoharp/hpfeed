@@ -34,13 +34,13 @@ echo "--> changing file permission ..."
 chmod 700 ${project_dir}/hpfeed
 
 # echo "--> stopping hpfeed ..."
-# svc -d /home/joscha/service/hpfeed"
+svc -d /home/joscha/service/hpfeed"
 
 # echo "--> delete old version ..."
-# rm ${command_dir}/hpfeed
+rm ${command_dir}/hpfeed
 
 # echo "--> coping to destination ..."
-# mv hpfeed ${command_dir}
+mv hpfeed ${command_dir}
 
 # echo "--> Starting ..."
-# svc -u /home/joscha/service/${binary_name}"
+svc -u /home/joscha/service/${binary_name}"
