@@ -3,8 +3,9 @@
 project_dir=/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed
 command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
+gopath=/home/joscha/gocode
 
-GOPATH=${project_dir}
+GOPATH=${gopath}
 GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
 GIT_WORK_TREE=${project_dir}
