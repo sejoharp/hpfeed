@@ -3,7 +3,7 @@
 project_dir=/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed
 command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
-gopath=/home/joscha/gocode 
+gopath=/home/joscha/gocode
 
 GIT_DIR=.git
 GOPATH=${gopath}
@@ -31,7 +31,7 @@ echo "--> compiling ..."
 go build
 
 echo "--> changing file permission ..."
-chmod 700 ${project_dir}/hpeed
+chmod 700 ${project_dir}/hpfeed
 
 # echo "--> stopping hpfeed ..."
 # svc -d /home/joscha/service/hpfeed"
