@@ -1,10 +1,8 @@
-#!/bin/bash
-set -eu
+#!/bin/sh
 
-
-project_dir="/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed"
-command_dir="/home/joscha/opt/hpfeed"
-goroot="/home/joscha/opt/go"
+project_dir=/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed
+command_dir=/home/joscha/opt/hpfeed
+goroot=/home/joscha/opt/go
 
 export GOPATH=${project_dir}
 export GOROOT=${goroot}
