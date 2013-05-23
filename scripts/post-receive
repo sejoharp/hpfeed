@@ -19,7 +19,7 @@ echo "--> changing to project directory ..."
 cd ${project_dir}
 
 echo "--> checkout source ..."
-git checkout -f master
+GIT_WORK_TREE=${project_dir} git checkout -f master
 
 echo "--> installing dependencies ..."
 go get
