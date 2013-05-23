@@ -11,7 +11,7 @@ GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
 export GOPATH GOROOT PATH GIT_DIR
 
-echo path: $GIT_DIR
+echo git_dir: $GIT_DIR
 echo path: $PATH
 echo gopath: $GOPATH
 echo goroot: $GOROOT
