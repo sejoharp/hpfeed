@@ -4,10 +4,10 @@ project_dir=/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed
 command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
 
-export GOPATH=${project_dir}
-export GOROOT=${goroot}
-export PATH=$PATH:${goroot}/bin
-
+GOPATH=${project_dir}
+GOROOT=${goroot}
+PATH=$PATH:${goroot}/bin
+export GOPATH GOROOT PATH
 
 echo "--> changing to project directory ..."
 cd ${project_dir}
