@@ -9,8 +9,7 @@ unset GIT_DIR
 GOPATH=${gopath}
 GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
-GIT_WORK_TREE=${project_dir}
-export GOPATH GOROOT PATH GIT_WORK_TREE
+export GOPATH GOROOT PATH
 
 echo path: $PATH
 echo gopath: $GOPATH
@@ -19,8 +18,10 @@ echo goroot: $GOROOT
 echo "--> changing to project directory ..."
 cd ${project_dir}
 
+unset GIT_DIR
+
 echo "--> checkout source ..."
-GIT_WORK_TREE=${project_dir} git checkout -f master
+git checkout -f master
 
 echo "--> installing dependencies ..."
 go get
