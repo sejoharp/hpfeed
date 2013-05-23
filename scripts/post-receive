@@ -8,6 +8,7 @@ export GOPATH=${project_dir}
 export GOROOT=${goroot}
 export PATH=$PATH:${goroot}/bin
 
+
 echo "--> changing to project directory ..."
 cd ${project_dir}
 
