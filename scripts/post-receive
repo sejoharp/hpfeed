@@ -5,12 +5,14 @@ command_dir=/home/joscha/opt/hpfeed
 goroot=/home/joscha/opt/go
 gopath=/home/joscha/gocode 
 
-GIT_DIR=.git
+GIT_DIR=${project_dir}/.git
 GOPATH=${gopath}
 GOROOT=${goroot}
 PATH=$PATH:${goroot}/bin
-export GOPATH GOROOT PATH GIT_DIR
+GIT_WORK_TREE=${project_dir}
+export GOPATH GOROOT PATH GIT_DIR GIT_WORK_TREE
 
+echo git_work_tree: $GIT_WORK_TREE
 echo git_dir: $GIT_DIR
 echo path: $PATH
 echo gopath: $GOPATH
