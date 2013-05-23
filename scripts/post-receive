@@ -8,13 +8,12 @@ goroot="/home/joscha/opt/go"
 export GOPATH=${project_dir}
 export GOROOT=${goroot}
 export PATH=$PATH:${goroot}/bin
-export GIT_WORK_TREE=${project_dir}
 
 echo "--> changing to project directory ..."
 cd ${project_dir}
 
 echo "--> checkout source ..."
-git checkout -f master
+GIT_WORK_TREE=${project_dir} git checkout -f master
 
 echo "--> installing dependencies ..."
 go get
@@ -36,4 +35,3 @@ chmod 700 ${project_dir}/hpeed
 
 # echo "--> Starting ..."
 # svc -u /home/joscha/service/${binary_name}"
-
