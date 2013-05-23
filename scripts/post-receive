@@ -1,21 +1,25 @@
-#!/bin/zsh
+#!/bin/bash
 set -eu
 
 project_dir="/home/joscha/gocode/src/bitbucket.org/joscha/hpfeed"
-command_dir="/home/joscha/opt/hpfeed/"
+command_dir="/home/joscha/opt/hpfeed"
+goroot="/home/joscha/opt/go"
 
-echo "--> checkout source ..."
-GIT_WORK_TREE=${project_dir} git checkout -f master
+export GOPATH=${project_dir}
+export GOROOT=${goroot}
+export PATH=$PATH:${goroot}/bin
 
 echo "--> changing to project directory ..."
 cd ${project_dir}
+
+echo "--> checkout source ..."
+git checkout -f master
 
 echo "--> installing dependencies ..."
 go get
 
 echo "--> compiling ..."
-GOPATH=${project_dir}
-go build
+env -i go build
 
 echo "--> changing file permission ..."
 chmod 700 ${project_dir}/hpeed
@@ -31,3 +35,4 @@ chmod 700 ${project_dir}/hpeed
 
 # echo "--> Starting ..."
 # svc -u /home/joscha/service/${binary_name}"
+
