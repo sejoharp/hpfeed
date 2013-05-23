@@ -18,7 +18,7 @@ echo "--> installing dependencies ..."
 go get
 
 echo "--> compiling ..."
-env -i go build
+go build
 
 echo "--> changing file permission ..."
 chmod 700 ${project_dir}/hpeed
