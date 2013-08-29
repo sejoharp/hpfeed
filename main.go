@@ -30,8 +30,8 @@ func main() {
 	signal.Notify(shutdownChannel, syscall.SIGINT, syscall.SIGTERM)
 
 	<-shutdownChannel
+	
 	helper.LogInfo("--> shutting down feed.")
-	// Stop the service gracefully.
 	webservice.Stop()
 	helper.LogInfo("--> stopping webservice.")
 	feedUpdaterBatch.Stop()
